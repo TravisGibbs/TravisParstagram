@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/tvUserTop"
+        android:layout_width="412dp"
+        android:layout_height="49dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        tools:text="Example UserName" />
+
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:backgroundTintMode="src_in"
+        android:scaleType="fitCenter"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivPost"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_below="@+id/tvUserTop"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvUserBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivPost"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        tools:text="Example Username" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUserBot"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:textSize="14sp"
+        tools:text="this is an example of somethig long enough where it could be the description of a post" />
+</RelativeLayout>
