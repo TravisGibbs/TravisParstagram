@@ -16,7 +16,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginEnd="100dp"
         android:layout_toEndOf="@+id/ivProfile"
         android:textAlignment="textStart"
         android:textColor="@android:color/black"
@@ -72,4 +72,18 @@
         android:layout_marginEnd="5dp"
         android:textSize="14sp"
         tools:text="this is an example of somethig long enough where it could be the description of a post" />
+
+    <TextView
+        android:id="@+id/TimeData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ivPost"
+        android:layout_alignTop="@+id/tvUserTop"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="-100dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/tvUserTop"
+        android:text="TextView" />
 </RelativeLayout>

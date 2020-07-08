@@ -45,10 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(Tag,"registered tapped");
-                String userText = String.valueOf(userTextEdit.getText());
-                String passText = String.valueOf(passTextEdit.getText());
-                registerUser(userText,passText);
+                goToRegister();
             }
         });
 
@@ -63,32 +60,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void registerUser(String userText, String passText) {
-        Log.i(Tag,"registering user: "+userText);
-        ParseUser user = new ParseUser();
-        user.setUsername(userText);
-        user.setPassword(passText);
-        user.setEmail("email@example.com");
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.i(Tag,"user created");
-                    // Hooray! Let them use the app now.
-                } else {
-                    Log.e(Tag,"user register failed",e);
-                    Snackbar.make(linearLayout, "Registration failed", Snackbar.LENGTH_SHORT).show();
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
-                }
-            }
-        });
-    }
+
 
     private void loginUser(String userText, String passText){
             ParseUser.logInInBackground(userText, passText, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
                     Log.i(Tag,"user logged in");
+                    goToMainActivity();
                 } else {
                     Log.e(Tag,"user login failed",e);
                     Snackbar.make(linearLayout, "login failed", Snackbar.LENGTH_SHORT).show();
@@ -99,6 +78,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void goToMainActivity(){
         Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
+
+    private void goToRegister(){
+        Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
     }
 }

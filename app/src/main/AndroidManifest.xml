@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ProfileSettings"></activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".ProfileSettings" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

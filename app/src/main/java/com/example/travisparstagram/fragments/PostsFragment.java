@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.travisparstagram.EndlessRecyclerViewScrollListener;
 import com.example.travisparstagram.Post;
 import com.example.travisparstagram.R;
 import com.parse.FindCallback;
@@ -24,7 +25,7 @@ import java.util.List;
 
 
 public class PostsFragment extends Fragment {
-
+    protected EndlessRecyclerViewScrollListener scrollListener;
     protected RecyclerView rvPosts;
     final static String Tag = "postsFrag";
     protected PostsAdapter postsAdapter;
@@ -33,6 +34,19 @@ public class PostsFragment extends Fragment {
         // Required empty public constructor
     }
 
+
+
+    // Append the next page of data into the adapter
+    // This method probably sends out a network request and appends new data items to your adapter.
+    public void loadNextDataFromApi(int offset) {
+        Log.i(Tag,"scrolled");
+        queryPosts();
+        // Send an API request to retrieve appropriate paginated data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+    }
 
 
     @Override
@@ -51,10 +65,29 @@ public class PostsFragment extends Fragment {
         rvPosts.setAdapter(postsAdapter);
         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
         queryPosts();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rvPosts.setLayoutManager(linearLayoutManager);
+        // Retain an instance so that you can call `resetState()` for fresh searches
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvPosts.addOnScrollListener(scrollListener);
     }
 
     protected void queryPosts(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.setLimit(5);
+        if(allPosts.size()>0) {
+
+            query.whereLessThan(Post.KEY_CREATED_AT, allPosts.get(allPosts.size() - 1).getCreatedAt());
+        }
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -62,11 +95,11 @@ public class PostsFragment extends Fragment {
                     Log.e(Tag, "can't get posts!", e);
                     return;
                 }
-                for (Post post : posts) {
-                    Log.i(Tag, "post called: " + post.getKeyDescription());
-                }
                 allPosts.addAll(posts);
                 postsAdapter.notifyDataSetChanged();
+                for(Post p : allPosts){
+                    Log.i(Tag,p.getKeyDescription());
+                }
             }
         });
 
