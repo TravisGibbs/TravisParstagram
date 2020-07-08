@@ -86,4 +86,29 @@
         android:layout_marginBottom="0dp"
         android:layout_toEndOf="@+id/tvUserTop"
         android:text="TextView" />
+
+    <ImageButton
+        android:id="@+id/heartButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ivPost"
+        android:layout_alignTop="@+id/tvUserBot"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-5dp"
+        android:layout_toEndOf="@+id/tvUserBot"
+        android:background="@color/colorPrimary"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ufi_heart_icon" />
+
+    <ImageButton
+        android:id="@+id/commentButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/heartButton"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/heartButton"
+        android:background="@color/colorPrimary"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ufi_comment" />
 </RelativeLayout>
