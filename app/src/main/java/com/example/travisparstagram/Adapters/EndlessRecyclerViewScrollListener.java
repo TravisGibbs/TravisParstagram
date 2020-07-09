@@ -1,4 +1,4 @@
-package com.example.travisparstagram;
+package com.example.travisparstagram.Adapters;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;

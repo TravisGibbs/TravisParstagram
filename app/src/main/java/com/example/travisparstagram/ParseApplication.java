@@ -1,13 +1,13 @@
 package com.example.travisparstagram;
 
 import android.app.Application;
-import android.util.Log;
 
+import com.example.travisparstagram.DataTypes.Comment;
+import com.example.travisparstagram.DataTypes.Post;
+import com.example.travisparstagram.DataTypes._User;
 import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

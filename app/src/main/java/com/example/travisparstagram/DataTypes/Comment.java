@@ -1,4 +1,4 @@
-package com.example.travisparstagram;
+package com.example.travisparstagram.DataTypes;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -13,19 +13,17 @@ public class Comment extends ParseObject {
     public String getText() {
         return getString(KEY_TEXT);
     }
-    public void setKeyText(String keyText){
+    public void setText(String keyText){
         put(KEY_TEXT, keyText);
     }
 
     public Post getPost(){
         return (Post) getParseObject(KEY_POST);
     }
-    public void setImage(ParseFile parseFile){
-        put(KEY_POST,parseFile);
+    public void setPost(Post post){
+        put(KEY_POST,post);
     }
-    public _User getUser(){
-        return (_User) getParseUser(KEY_USER);
-    }
+    public _User getUser(){ return (_User) getParseUser(KEY_USER); }
     public void setUser(ParseUser parseUser){
         put(KEY_USER,parseUser);
     }

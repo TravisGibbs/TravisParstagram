@@ -8,13 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.travisparstagram.DataTypes.Post;
+import com.example.travisparstagram.DataTypes._User;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.PointerEncoder;
 
 import java.util.ArrayList;
 import java.util.List;

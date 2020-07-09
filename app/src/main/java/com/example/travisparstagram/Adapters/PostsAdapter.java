@@ -1,4 +1,4 @@
-package com.example.travisparstagram.fragments;
+package com.example.travisparstagram.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,76 +15,88 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.travisparstagram.Comment;
-import com.example.travisparstagram.Post;
+import com.example.travisparstagram.CommentsActivity;
+import com.example.travisparstagram.DataTypes.Post;
 import com.example.travisparstagram.R;
 import com.example.travisparstagram.UserView;
-import com.example.travisparstagram._User;
-import com.example.travisparstagram._User;
+import com.example.travisparstagram.DataTypes._User;
 import com.parse.ParseException;
-import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-
 import static androidx.core.content.ContextCompat.startActivity;
 
-public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
+public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
 
     private Context context;
-    private List<Comment> comments;
-    public static final String Tag = "commentsAdapt";
+    private List<Post> posts;
+    public static final String Tag = "postAdapt";
 
 
-    CommentsAdapter(Context context, List<Comment> comments){
+    public PostsAdapter(Context context, List<Post> posts){
         this.context = context;
-        this.comments = comments;
+        this.posts = posts;
     }
-
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_comment, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
+
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Comment comment = comments.get(position);
-        holder.bind(comment);
+        Post post = posts.get(position);
+        holder.bind(post);
     }
-
-
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        return posts.size();
     }
 
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView tvTopUser;
+        private TextView tvBotUser;
+        private TextView tvDescription;
+        private ImageView ivProfile;
+        private ImageView ivImagePost;
+        private TextView tvTimeDate;
+        private ImageButton buttonComment;
+        private ImageButton buttonLike;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            tvBotUser = itemView.findViewById(R.id.tvUserBot);
+            tvTopUser = itemView.findViewById(R.id.tvUserTop);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
+            ivImagePost = itemView.findViewById(R.id.ivPost);
+            ivProfile =itemView.findViewById(R.id.ivProfile);
+            tvTimeDate = itemView.findViewById(R.id.TimeData);
+            buttonComment = itemView.findViewById(R.id.commentButton);
         }
         public String name;
         public String ID;
         _User user;
-        public void bind(Comment post){
-            TextView tvTimeDate = itemView.findViewById(R.id.TImeDateComment);
-            ImageView ivProfile = itemView.findViewById(R.id.profileComment);
-            TextView tvDescription = itemView.findViewById(R.id.textComment);
-            TextView tvTopUser = itemView.findViewById(R.id.UsernameComment);
+        public void bind(final Post post){
+            tvDescription.setText(post.getKeyDescription());
             user = post.getUser();
+            int radius = 200;
+            int margin = 22;
             name = "";
 
+            Log.i("posts",user.getObjectId());
             String URL = "";
             try {
                 name = user.fetchIfNeeded().getString("username");
@@ -91,10 +104,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 Log.v(Tag, e.toString());
                 e.printStackTrace();
             }
-            tvTimeDate.setText(getRelativeTimeAgo(post.getCreatedAt().toString()));
-            tvTopUser.setText(name);
-            tvDescription.setText(post.getText());
-
+                tvTimeDate.setText(getRelativeTimeAgo(post.getCreatedAt().toString()));
+                tvTopUser.setText(name);
+                tvBotUser.setText(name);
+            if(post.getImage()!=null) {
+                Glide.with(context).load(post.getImage().getUrl()).into(ivImagePost);
+            }
             if(user.getImage()!=null) {
                 Glide.with(context).load(user.getImage().getUrl()).circleCrop().into(ivProfile);
             }
@@ -107,6 +122,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
                     Log.i(Tag, ID);
                     goToGrid(ID, name);
+                }
+            });
+
+            buttonComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToComments(post);
                 }
             });
 
@@ -134,6 +156,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         Log.i(Tag,"name: " + name);
         intent.putExtra("Id", Id);
         intent.putExtra("userName", name);
+        startActivity(context, intent, null);
+    }
+
+    public void goToComments(Post post){
+        Intent intent = new Intent(context, CommentsActivity.class);
+        intent.putExtra("post", Parcels.wrap(post));
         startActivity(context, intent, null);
     }
 

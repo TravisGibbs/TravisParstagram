@@ -1,4 +1,4 @@
-package com.example.travisparstagram;
+package com.example.travisparstagram.DataTypes;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;

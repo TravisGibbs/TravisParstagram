@@ -24,19 +24,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.travisparstagram.MainActivity;
-import com.example.travisparstagram.Post;
+import com.example.travisparstagram.DataTypes.Post;
 import com.example.travisparstagram.R;
 import com.google.android.material.snackbar.Snackbar;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 

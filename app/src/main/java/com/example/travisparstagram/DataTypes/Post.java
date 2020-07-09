@@ -1,10 +1,13 @@
-package com.example.travisparstagram;
+package com.example.travisparstagram.DataTypes;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
+@Parcel(analyze = Post.class)
 @ParseClassName("Post")
 public class Post extends ParseObject {
     public Post(){

@@ -1,4 +1,4 @@
-package com.example.travisparstagram.fragments;
+package com.example.travisparstagram.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.travisparstagram.Comment;
-import com.example.travisparstagram.Post;
+import com.example.travisparstagram.DataTypes.Comment;
 import com.example.travisparstagram.R;
 import com.example.travisparstagram.UserView;
-import com.example.travisparstagram._User;
+import com.example.travisparstagram.DataTypes._User;
 import com.parse.ParseException;
 
 import java.text.SimpleDateFormat;
@@ -27,70 +26,59 @@ import java.util.Locale;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
 
     private Context context;
-    private List<Post> posts;
-    public static final String Tag = "postAdapt";
+    private List<Comment> comments;
+    public static final String Tag = "commentsAdapt";
 
 
-    PostsAdapter(Context context, List<Post> posts){
+    public CommentsAdapter(Context context, List<Comment> comments){
         this.context = context;
-        this.posts = posts;
+        this.comments = comments;
     }
+
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
-
-
+        View view = LayoutInflater.from(context).inflate(R.layout.item_comment, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Post post = posts.get(position);
-        holder.bind(post);
+        Comment comment = comments.get(position);
+        holder.bind(comment);
     }
+
+
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return comments.size();
     }
 
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvTopUser;
-        private TextView tvBotUser;
-        private TextView tvDescription;
-        private ImageView ivProfile;
-        private ImageView ivImagePost;
-        private TextView tvTimeDate;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvBotUser = itemView.findViewById(R.id.tvUserBot);
-            tvTopUser = itemView.findViewById(R.id.tvUserTop);
-            tvDescription = itemView.findViewById(R.id.tvDescription);
-            ivImagePost = itemView.findViewById(R.id.ivPost);
-            ivProfile =itemView.findViewById(R.id.ivProfile);
-            tvTimeDate = itemView.findViewById(R.id.TimeData);
+
         }
         public String name;
         public String ID;
         _User user;
-        public void bind(Post post){
-            tvDescription.setText(post.getKeyDescription());
+        public void bind(Comment post){
+            TextView tvTimeDate = itemView.findViewById(R.id.TImeDateComment);
+            ImageView ivProfile = itemView.findViewById(R.id.profileComment);
+            TextView tvDescription = itemView.findViewById(R.id.textComment);
+            TextView tvTopUser = itemView.findViewById(R.id.UsernameComment);
             user = post.getUser();
-            int radius = 200;
-            int margin = 22;
             name = "";
 
-            Log.i("posts",user.getObjectId());
             String URL = "";
             try {
                 name = user.fetchIfNeeded().getString("username");
@@ -98,12 +86,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 Log.v(Tag, e.toString());
                 e.printStackTrace();
             }
-                tvTimeDate.setText(getRelativeTimeAgo(post.getCreatedAt().toString()));
-                tvTopUser.setText(name);
-                tvBotUser.setText(name);
-            if(post.getImage()!=null) {
-                Glide.with(context).load(post.getImage().getUrl()).into(ivImagePost);
-            }
+            //tvTimeDate.setText(getRelativeTimeAgo(post.getCreatedAt().toString()));
+            tvTopUser.setText(name);
+            tvDescription.setText(post.getText());
+
             if(user.getImage()!=null) {
                 Glide.with(context).load(user.getImage().getUrl()).circleCrop().into(ivProfile);
             }

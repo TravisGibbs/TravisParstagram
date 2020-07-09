@@ -1,19 +1,8 @@
 package com.example.travisparstagram.fragments;
 
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import com.example.travisparstagram.Post;
-import com.example.travisparstagram.R;
+import com.example.travisparstagram.DataTypes.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
