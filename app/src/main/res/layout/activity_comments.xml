@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
-        android:text="Add" />
+        android:text="Post" />
 
     <EditText
         android:id="@+id/eview"

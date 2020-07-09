@@ -29,13 +29,18 @@ public class Post extends ParseObject {
     public _User getUser(){
         return (_User) getParseUser(KEY_USER);
     }
-    public void setUser(ParseUser parseUser){
-        put(KEY_USER,parseUser);
+    public void setUser(ParseUser parseUser){ put(KEY_USER,parseUser); }
+    public String getLike(){
+        return getString(KEY_LIKES);
+    }
+    public void setLikes(String likes){
+        put(KEY_LIKES,likes);
     }
 
     public static final String KEY_DESCRIPTION = "Description";
     public static final String KEY_IMAGE = "Image";
     public static final String KEY_USER = "User";
+    public static final String KEY_LIKES = "Likes";
 
 
 }

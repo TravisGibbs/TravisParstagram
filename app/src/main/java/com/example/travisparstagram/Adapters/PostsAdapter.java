@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.example.travisparstagram.R;
 import com.example.travisparstagram.UserView;
 import com.example.travisparstagram.DataTypes._User;
 import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -51,7 +53,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         return new ViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = posts.get(position);
@@ -73,6 +74,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private ImageView ivProfile;
         private ImageView ivImagePost;
         private TextView tvTimeDate;
+        private TextView tvLikes;
         private ImageButton buttonComment;
         private ImageButton buttonLike;
 
@@ -84,19 +86,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivImagePost = itemView.findViewById(R.id.ivPost);
             ivProfile =itemView.findViewById(R.id.ivProfile);
             tvTimeDate = itemView.findViewById(R.id.TimeData);
+            tvLikes = itemView.findViewById(R.id.likesText);
             buttonComment = itemView.findViewById(R.id.commentButton);
+            buttonLike = itemView.findViewById(R.id.heartButton);
         }
         public String name;
         public String ID;
         _User user;
+        boolean liked;
         public void bind(final Post post){
+
             tvDescription.setText(post.getKeyDescription());
             user = post.getUser();
-            int radius = 200;
-            int margin = 22;
+            liked = false;
             name = "";
 
-            Log.i("posts",user.getObjectId());
             String URL = "";
             try {
                 name = user.fetchIfNeeded().getString("username");
@@ -104,9 +108,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 Log.v(Tag, e.toString());
                 e.printStackTrace();
             }
-                tvTimeDate.setText(getRelativeTimeAgo(post.getCreatedAt().toString()));
-                tvTopUser.setText(name);
-                tvBotUser.setText(name);
+            tvTimeDate.setText(getRelativeTimeAgo(post.getCreatedAt().toString()));
+            tvLikes.setText(post.getLike());
+            tvTopUser.setText(name);
+            tvBotUser.setText(name);
             if(post.getImage()!=null) {
                 Glide.with(context).load(post.getImage().getUrl()).into(ivImagePost);
             }
@@ -129,6 +134,26 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     goToComments(post);
+                }
+            });
+
+            buttonLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(liked){
+                        buttonLike.setImageResource(R.drawable.ufi_heart_icon);
+                        String likesnum = String.valueOf(Integer.valueOf(tvLikes.getText().toString())-1);
+                        tvLikes.setText(likesnum);
+                        updateLikes(user, post, likesnum);
+                        liked = false;
+                    }
+                    else {
+                        buttonLike.setImageResource(R.drawable.ufi_heart_active);
+                        String likesnum = String.valueOf(1 + Integer.valueOf(tvLikes.getText().toString()));
+                        tvLikes.setText(likesnum);
+                        updateLikes(user, post, likesnum);
+                        liked = true;
+                    }
                 }
             });
 
@@ -163,6 +188,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         Intent intent = new Intent(context, CommentsActivity.class);
         intent.putExtra("post", Parcels.wrap(post));
         startActivity(context, intent, null);
+    }
+
+    public void updateLikes(_User user, Post post, String likesnum){
+        Post newPost = post;
+        newPost.setLikes(likesnum);
+        newPost.setUser(user);
+        newPost.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e==null){
+                    Log.i(Tag,"update succ");
+                }
+            }
+        });
     }
 
 }
