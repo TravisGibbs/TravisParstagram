@@ -48,7 +48,7 @@ Here's a walkthrough of implemented user stories:
 Register and login
 <img src='https://github.com/TravisGibbs/TravisParstagram/blob/master/RegisterLogin.gif?raw=true' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 Posting
-<img src='https://github.com/TravisGibbs/TravisParstagram/blob/master/posting.gif?raw=true' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/TravisGibbs/TravisParstagram/blob/master/Posting.gif?raw=true' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 Gridview, infinite scrolling, persistance, and icons
 <img src='https://github.com/TravisGibbs/TravisParstagram/blob/master/Gridview%20and%20Infinite%20scrolling%20and%20persistance.gif?raw=true' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
