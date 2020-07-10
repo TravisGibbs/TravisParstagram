@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.travisparstagram.CommentsActivity;
 import com.example.travisparstagram.DataTypes.Post;
+import com.example.travisparstagram.PostDetail;
 import com.example.travisparstagram.R;
 import com.example.travisparstagram.UserView;
 import com.example.travisparstagram.DataTypes._User;
@@ -118,6 +119,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             if(user.getImage()!=null) {
                 Glide.with(context).load(user.getImage().getUrl()).circleCrop().into(ivProfile);
             }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PostDetail.class);
+                    intent.putExtra("post", Parcels.wrap(post));
+                    startActivity(context, intent, null);
+                }
+            });
 
             ivProfile.setOnClickListener(new View.OnClickListener() {
                 @Override

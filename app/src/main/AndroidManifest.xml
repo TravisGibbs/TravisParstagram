@@ -14,21 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CommentsActivity"></activity>
+        <activity android:name=".PostDetail"></activity>
+        <activity android:name=".CommentsActivity" />
         <activity android:name=".UserView" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ProfileSettings" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.codepath.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/fileprovider" />
-        </provider>
-
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
