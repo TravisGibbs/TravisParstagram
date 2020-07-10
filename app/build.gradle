@@ -39,12 +39,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'
     annotationProcessor 'org.parceler:parceler:1.1.12'
-
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation "androidx.appcompat:appcompat:${appCompatVersion}"
     implementation "com.google.android.material:material:${designSupportVersion}"
-
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.24.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1' // for logging API calls to LogCat
+
 
     // Room for simple persistence with an ORM
     def room_version = "2.2.5"

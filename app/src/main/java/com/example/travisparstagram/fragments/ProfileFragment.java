@@ -16,7 +16,7 @@ public class ProfileFragment extends PostsFragment {
 
 
     @Override
-    protected void queryPosts(){
+    protected void queryPosts(boolean clear){
         {
             ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
             query.setLimit(20);

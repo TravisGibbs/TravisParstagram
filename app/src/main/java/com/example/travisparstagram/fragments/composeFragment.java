@@ -60,7 +60,9 @@ public class composeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_compose, container, false);
+
     }
 
     @Override
@@ -155,7 +157,6 @@ public class composeFragment extends Fragment {
                 imageTaken.setImageBitmap(takenImage);
                 imageTaken.setVisibility(View.VISIBLE);
             } else { // Result was a failure
-                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }

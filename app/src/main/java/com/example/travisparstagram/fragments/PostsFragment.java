@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,9 @@ public class PostsFragment extends Fragment {
     final static String Tag = "postsFrag";
     protected PostsAdapter postsAdapter;
     protected List<Post> allPosts;
+    private SwipeRefreshLayout swipeContainer;
+
+
     public PostsFragment() {
         // Required empty public constructor
     }
@@ -40,8 +46,7 @@ public class PostsFragment extends Fragment {
     // Append the next page of data into the adapter
     // This method probably sends out a network request and appends new data items to your adapter.
     public void loadNextDataFromApi(int offset) {
-        Log.i(Tag,"scrolled");
-        queryPosts();
+        queryPosts(false);
 
 
 
@@ -66,28 +71,48 @@ public class PostsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvPosts = view.findViewById(R.id.rvposts);
         allPosts = new ArrayList<>();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         postsAdapter = new PostsAdapter(getContext(),allPosts);
         rvPosts.setAdapter(postsAdapter);
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
-        queryPosts();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        // Retain an instance so that you can call `resetState()` for fresh searches
+        rvPosts.setLayoutManager(linearLayoutManager);
+        queryPosts(false);// Retain an instance so that you can call `resetState()` for fresh searches
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(Tag,"scrolled");
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
                 loadNextDataFromApi(page);
             }
         };
         // Adds the scroll listener to RecyclerView
+        Log.i(Tag,"scroll set");
         rvPosts.addOnScrollListener(scrollListener);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchTimelineAsync(0);
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_purple,
+                android.R.color.white,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
-    protected void queryPosts(){
+    protected void queryPosts(boolean clear){
+        if(clear) {
+            postsAdapter.clear();
+            allPosts.clear();
+        }
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
-        query.setLimit(20);
+        query.setLimit(2);
         if(allPosts.size()>0) {
 
             query.whereLessThan(Post.KEY_CREATED_AT, allPosts.get(allPosts.size() - 1).getCreatedAt());
@@ -101,11 +126,20 @@ public class PostsFragment extends Fragment {
                 }
                 allPosts.addAll(posts);
                 postsAdapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
                 for(Post p : allPosts){
                     Log.i(Tag,p.getKeyDescription());
                 }
             }
         });
+
+    }
+
+    public void fetchTimelineAsync(int page) {
+        queryPosts(true);
+        // Send the network request to fetch the updated data
+        // `client` here is an instance of Android Async HTTP
+        // getHomeTimeline is an example endpoint.
 
     }
 }
